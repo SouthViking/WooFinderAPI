@@ -1,3 +1,4 @@
+import * as bcrypt from 'bcrypt';
 
 export const PASSWORD_STRENGTH_REQUIREMENTS = [
     'Must contain at least 1 uppercase letter.',
@@ -17,4 +18,8 @@ export const isStrongPassword = (password: string) => {
     */
 
     return new RegExp('^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{16,100}$').test(password);
+};
+
+export const getHashedPassword = (password: string) => {
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 };
