@@ -1,7 +1,7 @@
 import { RegistrationBody } from '../../types';
 import { isValidRegistrationBody } from '../../validators';
 import { DBCollections, UserDocument, storage } from '../../db';
-import { PASSWORD_STRENGTH_REQUIREMENTS, getHashedPassword, isStrongPassword } from '../../utils';
+import { PASSWORD_STRENGTH_REQUIREMENTS, generateEmailVerificationToken, getHashedPassword, isStrongPassword } from '../../utils';
 
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
@@ -44,9 +44,12 @@ export const registrationHandler = async (request: Request<any, any, Registratio
         dateOfBirth: request.body.dateOfBirth,
         createdAt: Date.now(),
         password: getHashedPassword(request.body.password),
-        // TODO: Add logic for email verification.
         verifiedAccount: false,
     });
+
+    // TODO: Send verification email with the generated token.
+    const emailVerificationToken = generateEmailVerificationToken(result.insertedId.toString());
+    await storage.updateOne<UserDocument>(DBCollections.USERS, { _id: result.insertedId }, { $set: { emailVerificationToken } });
 
     return response.status(StatusCodes.CREATED).json({
         id: result.insertedId,

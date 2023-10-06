@@ -1,4 +1,10 @@
+import * as path from 'path';
+
+import * as dotenv from 'dotenv';
 import * as bcrypt from 'bcrypt';
+import * as jwt from 'jsonwebtoken';
+
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
 export const PASSWORD_STRENGTH_REQUIREMENTS = [
     'Must contain at least 1 uppercase letter.',
@@ -22,4 +28,14 @@ export const isStrongPassword = (password: string) => {
 
 export const getHashedPassword = (password: string) => {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+};
+
+export const generateEmailVerificationToken = (userId: string) => {
+    const payload = {
+        iat: Date.now(),
+        exp: (new Date(Date.now() + (1000 * 60 * 60 * 24))).getTime(),
+        userId,
+    };
+
+    return jwt.sign(payload, process.env.SECRET_KEY!);
 };
