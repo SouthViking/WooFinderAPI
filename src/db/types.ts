@@ -12,4 +12,5 @@ export interface UserDocument extends Document {
     email: string;
     dateOfBirth: number;
     createdAt: number;
+    verifiedAccount: boolean;
 }

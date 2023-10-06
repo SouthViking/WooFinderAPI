@@ -44,6 +44,8 @@ export const registrationHandler = async (request: Request<any, any, Registratio
         dateOfBirth: request.body.dateOfBirth,
         createdAt: Date.now(),
         password: getHashedPassword(request.body.password),
+        // TODO: Add logic for email verification.
+        verifiedAccount: false,
     });
 
     return response.status(StatusCodes.CREATED).json({
