@@ -7,3 +7,7 @@ export interface RegistrationBody {
     lastName: string;
     dateOfBirth: number;
 }
+
+export interface AccountVerificationQueryParams {
+    token?: string;
+}

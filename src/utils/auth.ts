@@ -39,3 +39,18 @@ export const generateEmailVerificationToken = (userId: string) => {
 
     return jwt.sign(payload, process.env.SECRET_KEY!);
 };
+
+export const isValidSignedToken = (token: string) => {
+    try {
+        jwt.verify(token, process.env.SECRET_KEY!);
+
+        return true;
+
+    } catch (err: unknown) {
+        return false;
+    }
+};
+
+export const decodeToken = <T>(token: string) => {
+    return jwt.decode(token) as T;
+};
