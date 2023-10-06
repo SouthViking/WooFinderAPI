@@ -1,6 +1,6 @@
 import path from 'path';
 
-import authRouter from './routes/auth/register';
+import { authRouter } from './routes';
 import { bodyCamelizer } from './middlewares';
 
 import express from 'express';
