@@ -2,9 +2,9 @@ import { ObjectId } from 'mongodb';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
-import { decodeToken, isValidSignedToken } from '../../utils';
 import { AccountVerificationQueryParams } from '../../types';
 import { DBCollections, UserDocument, storage } from '../../db';
+import { TokenState, decodeToken, verifyToken } from '../../utils';
 
 interface EmailVerificationTokenData {
     iat: number;
@@ -22,20 +22,16 @@ export const accountVerificationHandler = async (
         });
     }
 
-    if (!isValidSignedToken(request.query.token)) {
-        return response.status(StatusCodes.UNAUTHORIZED).json({
-            message: 'The email verification token is not valid.',
-        });
+    switch (verifyToken(request.query.token)) {
+        case TokenState.GENERAL_ERROR:
+            return response.status(StatusCodes.UNAUTHORIZED).json({ message: 'The token is not valid.' });
+        
+        case TokenState.EXPIRED:
+            return response.status(StatusCodes.UNAUTHORIZED).json({ message: 'The token is expired.' });
     }
 
     const decodedToken = decodeToken<EmailVerificationTokenData>(request.query.token);
     const internalUserId = new ObjectId(decodedToken.userId);
-
-    if (Date.now() > decodedToken.exp) {
-        return response.status(StatusCodes.UNAUTHORIZED).json({
-            message: 'The token has expired.',
-        });
-    }
 
     const userData = await storage.findOne<UserDocument>(DBCollections.USERS, { _id: internalUserId }, { projection: { emailVerificationToken: 1 } });
     if (userData === null) {

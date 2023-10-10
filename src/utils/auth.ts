@@ -6,6 +6,12 @@ import * as jwt from 'jsonwebtoken';
 
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
+export enum TokenState {
+    VALID,
+    EXPIRED,
+    GENERAL_ERROR
+}
+
 export const PASSWORD_STRENGTH_REQUIREMENTS = [
     'Must contain at least 1 uppercase letter.',
     'Must contain at least 1 special case letter.',
@@ -32,24 +38,27 @@ export const getHashedPassword = (password: string) => {
 
 export const generateEmailVerificationToken = (userId: string) => {
     const payload = {
-        iat: Date.now(),
-        exp: (new Date(Date.now() + (1000 * 60 * 60 * 24))).getTime(),
+        iat: Math.floor(Date.now() / 1000),
+        exp: Math.floor(Date.now() / 1000) + (60 * 60 * 3),
         userId,
     };
 
     return jwt.sign(payload, process.env.SECRET_KEY!);
 };
 
-export const isValidSignedToken = (token: string) => {
+export const verifyToken = (token: string) => {
     try {
         jwt.verify(token, process.env.SECRET_KEY!);
 
-        return true;
+        return TokenState.VALID;
 
-    } catch (err: unknown) {
-        return false;
+    } catch (err) {
+        if (err instanceof jwt.TokenExpiredError) {
+            return TokenState.EXPIRED;
+        }
+        return TokenState.GENERAL_ERROR;
     }
-};
+}
 
 export const decodeToken = <T>(token: string) => {
     return jwt.decode(token) as T;
