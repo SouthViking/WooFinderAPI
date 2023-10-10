@@ -10,3 +10,10 @@ export const isValidRegistrationBody = (body: any) => {
         { name: 'dateOfBirth', type: 'number' },
     ]);
 };
+
+export const isValidLoginBody = (body: any) => {
+    return isValidObject(body, [
+        { name: 'identity', type: 'string' },
+        { name: 'password', type: 'string' },
+    ]);
+};

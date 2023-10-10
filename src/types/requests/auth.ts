@@ -11,3 +11,9 @@ export interface RegistrationBody {
 export interface AccountVerificationQueryParams {
     token?: string;
 }
+
+export interface LoginBody {
+    /** Either the username or the email of the account. */ 
+    identity: string;
+    password: string;
+}

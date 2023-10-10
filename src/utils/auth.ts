@@ -36,6 +36,30 @@ export const getHashedPassword = (password: string) => {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 };
 
+export const isCorrectPassword = (plainPassword: string, hashedPassword: string) => {
+    return bcrypt.compareSync(plainPassword, hashedPassword);
+};
+
+export const generateAccessToken = (data: any) => {
+    const payload = {
+        ...data,
+        iat: Math.floor(Date.now() / 1000),
+        exp: Math.floor(Date.now() / 1000) + (60 * 60),
+    };
+
+    return jwt.sign(payload, process.env.SECRET_KEY!);
+};
+
+export const generateRefreshToken = (data: any) => {
+    const payload = {
+        ...data,
+        iat: Math.floor(Date.now() / 1000),
+        exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24),
+    };
+
+    return jwt.sign(payload, process.env.SECRET_KEY!); 
+};
+
 export const generateEmailVerificationToken = (userId: string) => {
     const payload = {
         iat: Math.floor(Date.now() / 1000),
