@@ -1,4 +1,4 @@
-import { isValidObject } from "./misc";
+import { isValidObject } from './misc';
 
 export const isValidRegistrationBody = (body: any) => {
     return isValidObject(body, [
