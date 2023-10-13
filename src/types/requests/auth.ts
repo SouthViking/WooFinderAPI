@@ -23,3 +23,7 @@ export interface AccessTokenPayload {
     exp: number;
     userId: string;
 }
+
+export interface TokenDataLocal {
+    tokenData: AccessTokenPayload;
+}
