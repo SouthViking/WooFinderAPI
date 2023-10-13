@@ -1,6 +1,6 @@
 import path from 'path';
 
-import { authRouter } from './routes';
+import { globalRouter } from './routes';
 import { bodyCamelizer } from './middlewares';
 
 import express from 'express';
@@ -15,7 +15,7 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyCamelizer);
-app.use('/api/v1/', authRouter);
+app.use('/api/v1', globalRouter);
 
 app.listen(PORT, () => {
     console.log(`Server running at port ${PORT}`);
