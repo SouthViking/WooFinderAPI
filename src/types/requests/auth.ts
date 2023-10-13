@@ -17,3 +17,9 @@ export interface LoginBody {
     identity: string;
     password: string;
 }
+
+export interface AccessTokenPayload {
+    iat: number;
+    exp: number;
+    userId: string;
+}
