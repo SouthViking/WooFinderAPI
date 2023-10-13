@@ -84,6 +84,17 @@ export const isValidObject = (object: Record<string, any>, expectedFields: Expec
                 fieldsWithError.push({ field: decamelizedField, message: `Maximum value: ${maxValue}` });
                 continue;
             }
+        
+        } else if (Array.isArray(object[expectedField.name])) {
+            const { allowEmpty } = expectedField.validators;
+
+            if (allowEmpty === false && object[expectedField.name].length === 0) {
+                isValid = false;
+                
+                fieldsWithError.push({ field: decamelizedField, message: 'List cannot be empty.' });
+                continue;
+            }
+
         }
 
     }
