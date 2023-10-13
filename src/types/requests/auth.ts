@@ -27,3 +27,10 @@ export interface AccessTokenPayload {
 export interface TokenDataLocal {
     tokenData: AccessTokenPayload;
 }
+
+export interface AccountUpdateBody {
+    username?: string;
+    firstName?: string;
+    lastName?: string;
+    dateOfBirth?: number;
+}
