@@ -1,4 +1,4 @@
-import { Document } from 'mongodb';
+import { Document, ObjectId } from 'mongodb';
 
 export enum DBCollections {
     USERS = 'users',
@@ -18,6 +18,7 @@ export interface UserDocument extends Document {
 }
 
 export interface PetDocument extends Document {
+    owner: ObjectId;
     secondaryOwners?: string[];
     name: string;
     otherNames?: string[];

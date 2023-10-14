@@ -34,6 +34,7 @@ export const petRegistrationHandler = async (request: Request<any, any, PetRegis
     }
 
     const newPetResult = await storage.insertOne<PetDocument>(DBCollections.PETS, {
+        owner: new ObjectId(tokenData.userId),
         name: request.body.name,
         otherNames: request.body.otherNames,
         secondaryOwners: request.body.secondaryOwners,
