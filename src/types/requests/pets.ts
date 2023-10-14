@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 
 export interface PetRegistrationBody {
     secondaryOwners?: string[];
@@ -8,4 +9,15 @@ export interface PetRegistrationBody {
     size: string;
     weight: number;
     description: string;
+}
+
+export interface PetUpdateBody {
+    name?: string;
+    otherNames?: string[];
+    secondaryOwners?: string[];
+    dateOfBirth?: number;
+    speciesId?: ObjectId;
+    size?: string;
+    weight?: string;
+    description?: string;
 }
