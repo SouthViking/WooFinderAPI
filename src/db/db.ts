@@ -62,6 +62,10 @@ class Storage {
     public async deleteOne<TSchema extends Document>(collectionName: string, filter: Filter<TSchema>, options?: DeleteOptions) {
         return await this.getCollection<TSchema>(collectionName).deleteOne(filter, options);
     }
+
+    public async deleteMany<TSchema extends Document>(collectionName: string, filter: Filter<TSchema>, options?: DeleteOptions) {
+        return await this.getCollection<TSchema>(collectionName).deleteMany(filter, options);
+    }
 }
 
 export const storage = new Storage({ uri: process.env.DB_CONNECTION_URI!, name: process.env.DB_NAME! });

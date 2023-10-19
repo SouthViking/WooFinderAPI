@@ -36,6 +36,8 @@ export const loginHandler = async (request: Request<any, any, LoginBody>, respon
     const tokenPayload = { userId: userRecord._id.toString() };
     const refreshToken = generateRefreshToken(tokenPayload);
 
+    await storage.deleteMany<RefreshTokenDocument>(DBCollections.REFRESH_TOKENS, { user: new ObjectId(tokenPayload.userId) });
+
     await storage.insertOne<RefreshTokenDocument>(DBCollections.REFRESH_TOKENS, {
         token: refreshToken,
         user: new ObjectId(tokenPayload.userId),
