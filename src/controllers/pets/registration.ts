@@ -43,6 +43,8 @@ export const petRegistrationHandler = async (request: Request<any, any, PetRegis
         size: request.body.size,
         weight: request.body.weight,
         description: request.body.description,
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
     });
 
     return response.status(StatusCodes.CREATED).json({

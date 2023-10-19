@@ -28,6 +28,8 @@ export interface PetDocument extends Document {
     size: string;
     weight: number;
     description: string;
+    createdAt: number;
+    updatedAt: number;
 }
 
 export interface RefreshTokenDocument extends Document {
