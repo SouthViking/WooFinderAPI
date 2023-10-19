@@ -3,7 +3,8 @@ import { Document, ObjectId } from 'mongodb';
 export enum DBCollections {
     USERS = 'users',
     PETS = 'pets',
-    REFRESH_TOKENS = 'refreshTokens'
+    REFRESH_TOKENS = 'refreshTokens',
+    REPORTS = 'reports'
 }
 
 export interface UserDocument extends Document {
@@ -36,4 +37,16 @@ export interface RefreshTokenDocument extends Document {
     user: ObjectId;
     token: string;
     createdAt: number;
+}
+
+export interface ReportDocument extends Document {
+    lastSeen: {
+        type: string;
+        coordinates: [number, number]
+    },
+    isActive: boolean;
+    createdAt: number;
+    updatedAt: number;
+    petId: ObjectId;
+    details?: string;
 }
