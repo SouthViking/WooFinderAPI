@@ -6,6 +6,7 @@ import { registrationHandler } from '../controllers/auth/register';
 import { getAccountHandler } from '../controllers/auth/get_account';
 import { accountVerificationHandler } from '../controllers/auth/account-verification';
 import { updateAccountHandler } from '../controllers/auth/update_account';
+import { tokenRefreshHandler } from '../controllers/auth/token-refresh';
 
 export const authRouter = Router();
 
@@ -13,4 +14,5 @@ authRouter.post('/login', loginHandler);
 authRouter.post('/', registrationHandler);
 authRouter.post('/verify', accountVerificationHandler);
 authRouter.get('/:id', accessTokenVerification, getAccountHandler);
-authRouter.put('/:id', accessTokenVerification, updateAccountHandler)
+authRouter.put('/:id', accessTokenVerification, updateAccountHandler);
+authRouter.post('/token/refresh', tokenRefreshHandler);

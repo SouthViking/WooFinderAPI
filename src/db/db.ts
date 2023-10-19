@@ -1,7 +1,18 @@
 import path from 'path';
 
 import * as dotenv from 'dotenv';
-import { MongoClient, ServerApiVersion, Filter, FindOptions, Document, InsertOneOptions, OptionalUnlessRequiredId, UpdateFilter, UpdateOptions } from 'mongodb';
+import {
+    MongoClient,
+    ServerApiVersion,
+    Filter,
+    FindOptions,
+    Document,
+    InsertOneOptions,
+    OptionalUnlessRequiredId,
+    UpdateFilter,
+    UpdateOptions,
+    DeleteOptions,
+} from 'mongodb';
 
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
@@ -46,6 +57,10 @@ class Storage {
 
     public async updateOne<TSchema extends Document>(collectionName: string, filter: Filter<TSchema>, update: UpdateFilter<TSchema> | Partial<TSchema>, options?: UpdateOptions) {
         return await this.getCollection<TSchema>(collectionName).updateOne(filter, update, options);
+    }
+
+    public async deleteOne<TSchema extends Document>(collectionName: string, filter: Filter<TSchema>, options?: DeleteOptions) {
+        return await this.getCollection<TSchema>(collectionName).deleteOne(filter, options);
     }
 }
 

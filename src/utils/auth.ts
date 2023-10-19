@@ -3,6 +3,7 @@ import * as path from 'path';
 import * as dotenv from 'dotenv';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
+import { TokenType } from '../types';
 
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
@@ -45,6 +46,7 @@ export const generateAccessToken = (data: any) => {
         ...data,
         iat: Math.floor(Date.now() / 1000),
         exp: Math.floor(Date.now() / 1000) + (60 * 60),
+        tokenType: TokenType.ACCESS,
     };
 
     return jwt.sign(payload, process.env.SECRET_KEY!);
@@ -55,6 +57,7 @@ export const generateRefreshToken = (data: any) => {
         ...data,
         iat: Math.floor(Date.now() / 1000),
         exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24),
+        tokenType: TokenType.REFRESH,
     };
 
     return jwt.sign(payload, process.env.SECRET_KEY!); 

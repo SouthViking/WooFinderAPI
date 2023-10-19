@@ -3,6 +3,7 @@ import { Document, ObjectId } from 'mongodb';
 export enum DBCollections {
     USERS = 'users',
     PETS = 'pets',
+    REFRESH_TOKENS = 'refreshTokens'
 }
 
 export interface UserDocument extends Document {
@@ -27,4 +28,10 @@ export interface PetDocument extends Document {
     size: string;
     weight: number;
     description: string;
+}
+
+export interface RefreshTokenDocument extends Document {
+    user: ObjectId;
+    token: string;
+    createdAt: number;
 }

@@ -1,4 +1,9 @@
 
+export enum TokenType {
+    ACCESS,
+    REFRESH
+}
+
 export interface RegistrationBody {
     username: string;
     email: string;
@@ -18,9 +23,17 @@ export interface LoginBody {
     password: string;
 }
 
-export interface AccessTokenPayload {
+export interface TokenBasePayload {
     iat: number;
     exp: number;
+    tokenType: TokenType;
+}
+
+export interface AccessTokenPayload extends TokenBasePayload {
+    userId: string;
+}
+
+export interface RefreshTokenPayload extends TokenBasePayload {
     userId: string;
 }
 
@@ -33,4 +46,8 @@ export interface AccountUpdateBody {
     firstName?: string;
     lastName?: string;
     dateOfBirth?: number;
+}
+
+export interface TokenRefreshBody {
+    refreshToken: string;
 }

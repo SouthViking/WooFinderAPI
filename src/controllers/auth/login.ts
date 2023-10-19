@@ -1,10 +1,10 @@
-import { WithId } from 'mongodb';
+import { ObjectId, WithId } from 'mongodb';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
 import { LoginBody } from '../../types';
 import { isValidLoginBody } from '../../validators';
-import { DBCollections, UserDocument, storage } from '../../db';
+import { DBCollections, RefreshTokenDocument, UserDocument, storage } from '../../db';
 import { generateAccessToken, generateRefreshToken, isCorrectPassword } from '../../utils';
 
 export const loginHandler = async (request: Request<any, any, LoginBody>, response: Response) => {
@@ -34,11 +34,19 @@ export const loginHandler = async (request: Request<any, any, LoginBody>, respon
     }
 
     const tokenPayload = { userId: userRecord._id.toString() };
+    const refreshToken = generateRefreshToken(tokenPayload);
+
+    await storage.insertOne<RefreshTokenDocument>(DBCollections.REFRESH_TOKENS, {
+        token: refreshToken,
+        user: new ObjectId(tokenPayload.userId),
+        createdAt: Date.now(),
+    });
+
 
     return response.status(StatusCodes.OK).json({
         tokens: {
             access: generateAccessToken(tokenPayload),
-            refresh: generateRefreshToken(tokenPayload),
+            refresh: refreshToken,
         },
     });
 };
