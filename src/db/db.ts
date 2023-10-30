@@ -12,6 +12,8 @@ import {
     UpdateFilter,
     UpdateOptions,
     DeleteOptions,
+    WithTransactionCallback,
+    TransactionOptions,
 } from 'mongodb';
 
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
@@ -69,6 +71,18 @@ class Storage {
 
     public async deleteMany<TSchema extends Document>(collectionName: string, filter: Filter<TSchema>, options?: DeleteOptions) {
         return await this.getCollection<TSchema>(collectionName).deleteMany(filter, options);
+    }
+
+    public async withTransaction<T = any>(callback: WithTransactionCallback<T>, options?: TransactionOptions) {
+        const session = this.client.startSession();
+
+        try {
+            await session.withTransaction<T>(callback, options);
+
+        } finally {
+            await session.endSession();
+        }
+
     }
 }
 

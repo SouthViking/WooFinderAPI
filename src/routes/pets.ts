@@ -6,11 +6,13 @@ import { petUpdateHandler } from '../controllers/pets/update';
 import { reportCreationHandler } from '../controllers/reports/creation';
 import { deleteReportHandler } from '../controllers/reports/deletion';
 import { petDetailHandler } from '../controllers/pets/detail';
+import { petDeletionHandler } from '../controllers/pets/deletion';
 
 export const petsRouter = Router();
 
 petsRouter.post('/', accessTokenVerification, petRegistrationHandler);
 petsRouter.put('/:id', accessTokenVerification, petUpdateHandler);
 petsRouter.get('/:id', accessTokenVerification, petDetailHandler);
+petsRouter.delete('/:id', accessTokenVerification, petDeletionHandler);
 petsRouter.post('/:id/reports', accessTokenVerification, reportCreationHandler);
 petsRouter.delete('/:id/reports/:reportId', accessTokenVerification, deleteReportHandler);
