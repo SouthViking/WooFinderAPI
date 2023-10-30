@@ -51,6 +51,10 @@ class Storage {
         return await this.getCollection<TSchema>(collectionName).findOne(filter, options);
     }
 
+    public async find<TSchema extends Document>(collectionName: string, filter: Filter<TSchema>, options?: FindOptions) {
+        return await this.getCollection<TSchema>(collectionName).find(filter, options);
+    }
+
     public async insertOne<TSchema extends Document>(collectionName: string, document: OptionalUnlessRequiredId<TSchema>, options?: InsertOneOptions) {
         return await this.getCollection<TSchema>(collectionName).insertOne(document, options);
     }
